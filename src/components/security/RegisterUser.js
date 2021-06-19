@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Grid,
@@ -6,57 +6,92 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
+import { userRegister } from "../../actions/UserAction";
 import style from "../styles/_form";
 
 export default function RegisterUser() {
+  const [user, setUser] = useState({
+    FullName: "",
+    Email: "",
+    Password: "",
+    ConfirmPassword: "",
+    UserName: "",
+  });
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setUser((u) => ({
+      ...u,
+      [name]: value,
+    }));
+  };
+
+  const register = (e) => {
+    e.preventDefault();
+    userRegister(user).then((response) => {
+      console.log(response);
+      window.localStorage.setItem("token_security", response.data.token);
+    });
+  };
+
   return (
     <Container component="main" maxWidth="md" justify="center">
       <div style={style.paper}>
         <Typography component="h1" variant="h5">
-          Register User
+          User Registration
         </Typography>
         <form style={style.form}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={12}>
               <TextField
-                name="fullname"
+                name="FullName"
                 variant="outlined"
                 fullWidth
                 label="Write your full name"
+                onChange={onChange}
+                value={user.FullName}
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
-                name="email"
+                name="Email"
                 variant="outlined"
                 fullWidth
                 label="Write your Email"
+                onChange={onChange}
+                value={user.Email}
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
-                name="username"
+                name="UserName"
                 variant="outlined"
                 fullWidth
                 label="Write your Username"
+                onChange={onChange}
+                value={user.UserName}
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
-                name="password"
+                name="Password"
                 type="password"
                 variant="outlined"
                 fullWidth
                 label="Write your Password"
+                onChange={onChange}
+                value={user.Password}
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
-                name="confirmpassword"
+                name="ConfirmPassword"
                 type="password"
                 variant="outlined"
                 fullWidth
                 label="Confirm your Password"
+                onChange={onChange}
+                value={user.ConfirmPassword}
               />
             </Grid>
           </Grid>
@@ -68,6 +103,7 @@ export default function RegisterUser() {
                 variant="contained"
                 color="primary"
                 style={style.submit}
+                onClick={register}
               >
                 Submit
               </Button>

@@ -13,7 +13,7 @@ export default function UserProfile() {
     <Container component="main" maxWidth="md" justify="center">
       <div style={style.paper}>
         <Typography component="h1" variant="h5">
-          User's Profile
+          User Profile
         </Typography>
         <form style={style.form}>
           <Grid container spacing={2}>

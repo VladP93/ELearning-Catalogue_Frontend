@@ -9,7 +9,9 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <RegisterUser />
+      <hr />
       <Login />
+      <hr />
       <UserProfile />
     </MuiThemeProvider>
   );
