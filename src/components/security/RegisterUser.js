@@ -26,11 +26,11 @@ export default function RegisterUser() {
     }));
   };
 
-  const register = (e) => {
+  const submit = (e) => {
     e.preventDefault();
     userRegister(user).then((response) => {
       console.log(response);
-      window.localStorage.setItem("token_security", response.data.token);
+      window.localStorage.setItem("sec_token", response.data.token);
     });
   };
 
@@ -103,7 +103,7 @@ export default function RegisterUser() {
                 variant="contained"
                 color="primary"
                 style={style.submit}
-                onClick={register}
+                onClick={submit}
               >
                 Submit
               </Button>
