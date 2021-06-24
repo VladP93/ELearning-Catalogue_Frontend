@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Avatar,
@@ -8,8 +8,31 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import style from "../styles/_form";
+import { loginUser } from "../../actions/UserAction";
 
 export default function Login() {
+  const [user, setUser] = useState({
+    Email: "",
+    Password: "",
+  });
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+
+    setUser((data) => ({
+      ...data,
+      [name]: value,
+    }));
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+    loginUser(user).then((response) => {
+      console.log(response);
+      window.localStorage.setItem("sec_token", response.data.token);
+    });
+  };
+
   return (
     <Container maxWidth="xs">
       <div style={style.paper}>
@@ -22,16 +45,20 @@ export default function Login() {
         <form style={style.form}>
           <TextField
             variant="outlined"
-            label="Write your Username"
-            name="username"
+            label="Write your Email"
+            name="Email"
+            value={user.Email}
             fullWidth
+            onChange={onChange}
           />
           <TextField
             variant="outlined"
             type="password"
-            name="password"
+            name="Password"
             label="Write your password"
             fullWidth
+            value={user.Password}
+            onChange={onChange}
             margin="normal"
           />
           <Button
@@ -41,6 +68,7 @@ export default function Login() {
             color="primary"
             style={style.submit}
             margin="normal"
+            onClick={submit}
           >
             Submit
           </Button>

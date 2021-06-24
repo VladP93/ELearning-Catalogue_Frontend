@@ -23,3 +23,11 @@ export const updateUser = (user) => {
     });
   });
 };
+
+export const loginUser = (user) => {
+  return new Promise((resolve, eject) => {
+    HttpClient.post("User/login", user).then((response) => {
+      resolve(response);
+    });
+  });
+};
