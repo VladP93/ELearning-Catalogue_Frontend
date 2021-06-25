@@ -37,8 +37,25 @@ export default function UserProfile() {
   const submit = (e) => {
     e.preventDefault();
     updateUser(user).then((response) => {
-      window.localStorage.setItem("sec_token", response.data.token);
-      console.log(response);
+      if (response.status === 200) {
+        dispatch({
+          type: "OPEN_SNACKBAR",
+          openMessage: {
+            open: true,
+            message: "Update successfuly",
+          },
+        });
+        window.localStorage.setItem("sec_token", response.data.token);
+      } else {
+        dispatch({
+          type: "OPEN_SNACKBAR",
+          openMessage: {
+            open: true,
+            message:
+              "An error has ocurred: " + Object.keys(response.data.errors),
+          },
+        });
+      }
     });
   };
 

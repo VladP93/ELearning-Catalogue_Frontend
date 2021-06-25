@@ -23,9 +23,13 @@ export const getActualUser = (dispatch) => {
 
 export const updateUser = (user) => {
   return new Promise((resolve, eject) => {
-    HttpClient.put("/User", user).then((response) => {
-      resolve(response);
-    });
+    HttpClient.put("/User", user)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        resolve(err.response);
+      });
   });
 };
 

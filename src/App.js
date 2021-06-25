@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Grid } from "@material-ui/core";
+import { Grid, Snackbar } from "@material-ui/core";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme/theme";
 import Navbar from "./components/navigation/Navbar";
@@ -11,7 +11,7 @@ import { useStateValue } from "./context/store";
 import { getActualUser } from "./actions/UserAction";
 
 function App() {
-  const [, dispatch] = useStateValue();
+  const [{ snackbar }, dispatch] = useStateValue();
   const [initApp, setInitApp] = useState(false);
 
   useEffect(() => {
@@ -27,19 +27,43 @@ function App() {
   }, [dispatch, initApp]);
 
   return (
-    <Router>
-      <MuiThemeProvider theme={theme}>
-        <Navbar />
-        <Grid container>
-          <Switch>
-            <Route exact path="/auth/login" component={Login} />
-            <Route exact path="/auth/register" component={RegisterUser} />
-            <Route exact path="/auth/profile" component={UserProfile} />
-            <Route exact path="/" component={UserProfile} />
-          </Switch>
-        </Grid>
-      </MuiThemeProvider>
-    </Router>
+    <React.Fragment>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={snackbar ? snackbar.open : false}
+        autoHideDuration={3000}
+        ContentProps={{
+          "aria-describedby": "message-id",
+        }}
+        message={
+          <span id="message-id">
+            {snackbar ? snackbar.message : "Error desconocido"}
+          </span>
+        }
+        onClose={() =>
+          dispatch({
+            type: "OPEN_SNACKBAR",
+            openMessage: {
+              open: false,
+              message: "",
+            },
+          })
+        }
+      ></Snackbar>
+      <Router>
+        <MuiThemeProvider theme={theme}>
+          <Navbar />
+          <Grid container>
+            <Switch>
+              <Route exact path="/auth/login" component={Login} />
+              <Route exact path="/auth/register" component={RegisterUser} />
+              <Route exact path="/auth/profile" component={UserProfile} />
+              <Route exact path="/" component={UserProfile} />
+            </Switch>
+          </Grid>
+        </MuiThemeProvider>
+      </Router>
+    </React.Fragment>
   );
 }
 
