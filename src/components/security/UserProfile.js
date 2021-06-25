@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import style from "../styles/_form";
 import { getActualUser, updateUser } from "../../actions/UserAction";
+import { useStateValue } from "../../context/store";
 
 export default function UserProfile() {
   const [user, setUser] = useState({
@@ -17,12 +18,13 @@ export default function UserProfile() {
     password: "",
     confirmpassword: "",
   });
+  const [, dispatch] = useStateValue();
 
   useEffect(() => {
-    getActualUser().then((response) => {
+    getActualUser(dispatch).then((response) => {
       setUser(response.data);
     });
-  }, []);
+  }, [dispatch]);
 
   const onChange = (e) => {
     const { name, value } = e.target;

@@ -8,9 +8,13 @@ import {
   Avatar,
 } from "@material-ui/core";
 import logo from "../../../logo.svg";
+import { useStateValue } from "../../../context/store";
 
 export default function BarSession() {
   const classes = useStyles();
+  const [{ userSession }] = useStateValue();
+
+  console.log(userSession);
 
   return (
     <Toolbar>
@@ -21,7 +25,9 @@ export default function BarSession() {
       <div className={classes.grow}></div>
       <div className={classes.sectionDesktop}>
         <Button color="inherit">Salir</Button>
-        <Button color="inherit">{"nombre de usuario"}</Button>
+        <Button color="inherit">
+          {userSession ? userSession.user.username : "ERROR"}
+        </Button>
         <Avatar src={logo}></Avatar>
       </div>
       <div className={classes.sectionMobile}>

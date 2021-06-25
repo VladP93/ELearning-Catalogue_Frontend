@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
@@ -7,8 +7,25 @@ import Navbar from "./components/navigation/Navbar";
 import RegisterUser from "./components/security/RegisterUser";
 import Login from "./components/security/Login";
 import UserProfile from "./components/security/UserProfile";
+import { useStateValue } from "./context/store";
+import { getActualUser } from "./actions/UserAction";
 
 function App() {
+  const [, dispatch] = useStateValue();
+  const [initApp, setInitApp] = useState(false);
+
+  useEffect(() => {
+    if (!initApp) {
+      getActualUser(dispatch)
+        .then((response) => {
+          setInitApp(true);
+        })
+        .catch((err) => {
+          setInitApp(true);
+        });
+    }
+  }, [dispatch, initApp]);
+
   return (
     <Router>
       <MuiThemeProvider theme={theme}>

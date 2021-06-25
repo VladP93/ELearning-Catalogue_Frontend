@@ -8,9 +8,14 @@ export const userRegister = (user) => {
   });
 };
 
-export const getActualUser = () => {
+export const getActualUser = (dispatch) => {
   return new Promise((resolve, eject) => {
     HttpClient.get("/User").then((response) => {
+      dispatch({
+        type: "LOG_IN",
+        session: response.data,
+        auth: true,
+      });
       resolve(response);
     });
   });
